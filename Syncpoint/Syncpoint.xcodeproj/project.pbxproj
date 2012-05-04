@@ -33,6 +33,7 @@
 		27108CC3151285B800E5B92C /* Syncpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27EB94A814F700AC00072752 /* Syncpoint.framework */; };
 		27108CC61512861300E5B92C /* Syncpoint.framework in Copy Framework */ = {isa = PBXBuildFile; fileRef = 27EB94A814F700AC00072752 /* Syncpoint.framework */; };
 		27108CE215128FB000E5B92C /* MYURLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 27108CE115128FB000E5B92C /* MYURLHandler.m */; };
+		277B2E4B15520AD200693E3F /* libCouchCocoa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27EB951E14F70D8800072752 /* libCouchCocoa.a */; };
 		278495F0150AC44100A41C44 /* libCouchCocoa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 278495EF150AC44100A41C44 /* libCouchCocoa.a */; };
 		27849608150C195400A41C44 /* SyncpointInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 27849607150C195400A41C44 /* SyncpointInternal.h */; };
 		27849609150C195400A41C44 /* SyncpointInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 27849607150C195400A41C44 /* SyncpointInternal.h */; };
@@ -43,7 +44,6 @@
 		27EB94CD14F7015800072752 /* SyncpointClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 27EB94CB14F7015800072752 /* SyncpointClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27EB94CE14F7015800072752 /* SyncpointClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EB94CC14F7015800072752 /* SyncpointClient.m */; };
 		27EB94CF14F701EF00072752 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27EB94B014F700AC00072752 /* Foundation.framework */; };
-		27EB94F814F703A400072752 /* libCouchCocoa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27EB94F714F703A400072752 /* libCouchCocoa.a */; };
 		27EB94FB14F7043C00072752 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27EB94FA14F7043C00072752 /* libsqlite3.dylib */; };
 		27EB94FD14F7044300072752 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27EB94FC14F7044300072752 /* libz.dylib */; };
 		27EB94FF14F7044900072752 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27EB94FE14F7044900072752 /* SystemConfiguration.framework */; };
@@ -155,7 +155,6 @@
 		27EB94B014F700AC00072752 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		27EB94CB14F7015800072752 /* SyncpointClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SyncpointClient.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		27EB94CC14F7015800072752 /* SyncpointClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SyncpointClient.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		27EB94F714F703A400072752 /* libCouchCocoa.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libCouchCocoa.a; path = ../CouchCocoa/build/Release/libCouchCocoa.a; sourceTree = "<group>"; };
 		27EB94F914F7040100072752 /* Syncpoint-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Syncpoint-Info.plist"; sourceTree = "<group>"; };
 		27EB94FA14F7043C00072752 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		27EB94FC14F7044300072752 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -236,8 +235,8 @@
 				27EB94FF14F7044900072752 /* SystemConfiguration.framework in Frameworks */,
 				27EB94FD14F7044300072752 /* libz.dylib in Frameworks */,
 				27EB94FB14F7043C00072752 /* libsqlite3.dylib in Frameworks */,
-				27EB94F814F703A400072752 /* libCouchCocoa.a in Frameworks */,
 				27EB94CF14F701EF00072752 /* Foundation.framework in Frameworks */,
+				277B2E4B15520AD200693E3F /* libCouchCocoa.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,7 +345,6 @@
 				27EB94FE14F7044900072752 /* SystemConfiguration.framework */,
 				27EB94FC14F7044300072752 /* libz.dylib */,
 				27EB94FA14F7043C00072752 /* libsqlite3.dylib */,
-				27EB94F714F703A400072752 /* libCouchCocoa.a */,
 				27EB94B014F700AC00072752 /* Foundation.framework */,
 				27EB957D14F87C6800072752 /* UIKit.framework */,
 				27EB958014F87C6800072752 /* CoreGraphics.framework */,
@@ -844,6 +842,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SyncpointPrefix.pch;
 				INFOPLIST_FILE = "Syncpoint-Info.plist";
+				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Syncpoint;
 				WRAPPER_EXTENSION = framework;
@@ -859,6 +858,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SyncpointPrefix.pch;
 				INFOPLIST_FILE = "Syncpoint-Info.plist";
+				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Syncpoint;
 				WRAPPER_EXTENSION = framework;
