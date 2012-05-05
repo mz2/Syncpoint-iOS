@@ -71,16 +71,15 @@
                                                          error: nil];   // TODO: Report error
             _state = kSyncpointUnauthenticated;
         }
+        if (nil != _session.error) {
+            LogTo(Syncpoint, @"Session has error: %@", _session.error.localizedDescription);
+        }
         if (_session.isPaired) {
             LogTo(Syncpoint, @"Session is active");
             [self connectToControlDB];
         } else if (_session.isReadyToPair) {
-            if (nil != _session.error) {
-                LogTo(Syncpoint, @"Session has error: %@", _session.error.localizedDescription);
-                _state = kSyncpointHasError;
-            }
             LogTo(Syncpoint, @"Begin pairing with cloud: %@", _remote.absoluteString);
-            [self pairSession];
+            [self beginPairing];
         }
     }
     return self;
@@ -119,11 +118,6 @@
 }
 
 
-
-- (BOOL) isActivated {
-    return _state > kSyncpointActivating;
-}
-
 - (CouchDatabase*) databaseForMyChannelNamed: (NSString*) channelName error: (NSError**)error {
     SyncpointChannel* channel = [_session myChannelWithName:channelName];
     CouchDatabase* database;
@@ -157,10 +151,7 @@
     [_session setValue: pairingType ofProperty: @"pairing_type"];
     [_session setValue: pairingToken ofProperty: @"pairing_token"];
     [[_session save] wait: nil];
-    if (_session.isReadyToPair)
-        [self pairSession];
-    else
-        self.state = kSyncpointUnauthenticated;
+    [self beginPairing];
 }
 
 
@@ -234,12 +225,13 @@
     [op start];
 }
 
-- (void) pairSession {
+- (void) beginPairing {
     LogTo(Syncpoint, @"Pairing session...");
-    Assert(!_session.isPaired);
-    [_session clearState: nil];
-    self.state = kSyncpointActivating;
-    [self savePairingUserToRemote];
+    if (_session.isReadyToPair) {
+        Assert(!_session.isPaired);
+        [_session clearState: nil];
+        [self savePairingUserToRemote];
+    }
 }
 
 
@@ -253,9 +245,10 @@
 }
 
 - (void) controlDatabaseChanged {
-    if (_state > kSyncpointActivating) {
+    // if we are done with first ever sync
+    if (_session.control_db_synced) {
         LogTo(Syncpoint, @"Control DB changed");
-//        todo collect 1 second of changes before acting
+        // collect 1 second of changes before acting
         MYAfterDelay(1.0, ^{
             [self getUpToDateWithSubscriptions];
         });
@@ -281,19 +274,6 @@
     self.state = kSyncpointUpdatingControlDatabase;
 }
 
-- (void) didInitialSyncOfControlDB {
-    _controlPull = [self pullControlDataFromDatabaseNamed: _session.control_database];
-    _controlPull.continuous = YES; // Now we can sync continuously
-    // The local Syncpoint client is ready
-    self.state = kSyncpointReady;
-    LogTo(Syncpoint, @"**READY**");
-    MYAfterDelay(1.0, ^{
-        [_session didSyncControlDB];
-        [self getUpToDateWithSubscriptions];
-        [self observeControlDatabase];
-    });
-}
-
 - (void) doInitialSyncOfControlDB {
     if (!_observingControlPull) {
         // During the initial sync, make the pull non-continuous, and observe when it stops.
@@ -304,6 +284,19 @@
         [_controlPull addObserver: self forKeyPath: @"running" options: 0 context: NULL];
         _observingControlPull = YES;
     }
+}
+
+- (void) didInitialSyncOfControlDB {
+    _controlPull = [self pullControlDataFromDatabaseNamed: _session.control_database];
+    _controlPull.continuous = YES; // Now we can sync continuously
+    // The local Syncpoint client is ready
+    self.state = kSyncpointReady;
+    LogTo(Syncpoint, @"didInitialSyncOfControlDB");
+    [_session didSyncControlDB];
+    MYAfterDelay(1.0, ^{
+        [self getUpToDateWithSubscriptions];
+        [self observeControlDatabase];
+    });
 }
 
 // Observes when the initial _controlPull stops running, after -connectToControlDB.

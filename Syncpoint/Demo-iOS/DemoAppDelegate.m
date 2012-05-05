@@ -14,14 +14,15 @@
 //  and limitations under the License.
 
 #import "DemoAppDelegate.h"
-#import "RootViewController.h"
+#import "ChecklistViewController.h"
 #import <Syncpoint/Syncpoint.h>
 
 
-#define kServerURLString @"http://localhost:5984/"
+#define kServerURLString @"http://jchrisa.iriscouch.com/"
 
 #define kSyncpointAppId @"demo-app"
-#define kDefaultChannelName @"grocery-sync"
+// lowercase required:
+#define kDefaultChannelName @"groceries"
 #define sFacebookAppID @"251541441584833"
 
 @implementation DemoAppDelegate
@@ -65,7 +66,7 @@
     NSLog(@"...using CouchDatabase at <%@>", database.URL);
     
     // Push the default ListViewController: todo rename RootViewController class
-    RootViewController* listController = [[RootViewController alloc] init];
+    ChecklistViewController* listController = [[ChecklistViewController alloc] init];
     [navigationController pushViewController:listController animated:NO];
     listController.navigationItem.title = kDefaultChannelName;
     [listController useDatabase: database];

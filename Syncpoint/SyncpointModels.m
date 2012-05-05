@@ -277,7 +277,7 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
 
 - (void) didSyncControlDB {
     if(![self controlDBSynced]) {
-        self.control_db_synced = TRUE;
+        self.control_db_synced = YES;
         [[self save] wait: nil];
         [self doPendingInstalls];
     }

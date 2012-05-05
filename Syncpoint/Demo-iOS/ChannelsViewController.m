@@ -7,7 +7,7 @@
 //
 
 #import "DemoAppDelegate.h"
-#import "RootViewController.h"
+#import "ChecklistViewController.h"
 #import "ChannelsViewController.h"
 #import "NewChannelViewController.h"
 #import <Syncpoint/Syncpoint.h>
@@ -88,7 +88,7 @@
     }
     UINavigationController* navController = (UINavigationController*)self.parentViewController;
     
-    RootViewController* listController = [[RootViewController alloc] init];
+    ChecklistViewController* listController = [[ChecklistViewController alloc] init];
     [listController useDatabase: database];
     listController.navigationItem.title = channel.name;
     [navController pushViewController:listController animated:YES];    

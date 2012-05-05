@@ -18,7 +18,7 @@
 // the License.
 //
 
-#import "RootViewController.h"
+#import "ChecklistViewController.h"
 #import "ConfigViewController.h"
 #import "ChannelsViewController.h"
 #import "DemoAppDelegate.h"
@@ -26,14 +26,14 @@
 #import <Syncpoint/CouchCocoa.h>
 #import <Syncpoint/CouchDesignDocument_Embedded.h>
 
-
-@interface RootViewController ()
+// todo rename class to ChecklistViewConroller
+@interface ChecklistViewController ()
 @property(nonatomic, strong)CouchDatabase *database;
 @property(nonatomic, strong)NSURL* remoteSyncURL;
 @end
 
 
-@implementation RootViewController
+@implementation ChecklistViewController
 
 
 @synthesize dataSource;

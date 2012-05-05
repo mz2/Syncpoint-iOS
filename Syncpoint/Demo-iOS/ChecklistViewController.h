@@ -23,7 +23,7 @@
 @class CouchDatabase, CouchPersistentReplication, Syncpoint;
 
 
-@interface RootViewController : UIViewController <CouchUITableDelegate, UITextFieldDelegate>
+@interface ChecklistViewController : UIViewController <CouchUITableDelegate, UITextFieldDelegate>
 {
     CouchDatabase *database;
     NSURL* remoteSyncURL;
