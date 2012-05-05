@@ -18,7 +18,6 @@
 
 
 @interface SyncpointClient ()
-@property (readwrite, nonatomic) SyncpointState state;
 @end
 
 
@@ -33,11 +32,10 @@
     CouchReplication *_controlPull;
     CouchReplication *_controlPush;
     BOOL _observingControlPull;
-    SyncpointState _state;
 }
 
 
-@synthesize localServer=_server, state=_state, session=_session, appId=_appId;
+@synthesize localServer=_server, session=_session, appId=_appId;
 
 
 - (id) initWithRemoteServer: (NSURL*)remoteServerURL
@@ -69,7 +67,6 @@
             _session = [SyncpointSession makeSessionInDatabase: _localControlDatabase
                                                          appId: _appId
                                                          error: nil];   // TODO: Report error
-            _state = kSyncpointUnauthenticated;
         }
         if (nil != _session.error) {
             LogTo(Syncpoint, @"Session has error: %@", _session.error.localizedDescription);
@@ -270,8 +267,6 @@
 
     _controlPush = [self pushControlDataToDatabaseNamed: controlDBName];
     _controlPush.continuous = YES;
-
-    self.state = kSyncpointUpdatingControlDatabase;
 }
 
 - (void) doInitialSyncOfControlDB {
@@ -287,11 +282,9 @@
 }
 
 - (void) didInitialSyncOfControlDB {
+    LogTo(Syncpoint, @"didInitialSyncOfControlDB");
     _controlPull = [self pullControlDataFromDatabaseNamed: _session.control_database];
     _controlPull.continuous = YES; // Now we can sync continuously
-    // The local Syncpoint client is ready
-    self.state = kSyncpointReady;
-    LogTo(Syncpoint, @"didInitialSyncOfControlDB");
     [_session didSyncControlDB];
     MYAfterDelay(1.0, ^{
         [self getUpToDateWithSubscriptions];
@@ -304,7 +297,6 @@
                          change: (NSDictionary*)change context: (void*)context
 {
     if (object == _controlPull && !_controlPull.running) {
-        LogTo(Syncpoint, @"Did initial sync of control database");
         [self stopObservingControlPull];
         [self didInitialSyncOfControlDB];
     }

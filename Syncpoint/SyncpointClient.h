@@ -10,16 +10,6 @@
 @class CouchServer, SyncpointSession, SyncpointInstallation, SyncpointChannel;
 
 
-typedef enum {
-    kSyncpointHasError,         /**< Server failed to authenticate/activate. */
-    kSyncpointUnauthenticated,  /**< No session, and no auth token to pair with */
-    kSyncpointAuthenticating,   /**< Authenticating user credentials (e.g. by OAuth) */
-    kSyncpointActivating,       /**< Got auth token, now setting up with the server */
-    kSyncpointUpdatingControlDatabase,  /**< Syncing session changes with the server */
-    kSyncpointReady             /**< In sync with the server, ready to go */
-} SyncpointState;
-
-
 /** Syncpoint client-side controller: pairs with the server and tracks channels and subscriptions. */
 @interface SyncpointClient : NSObject
 
@@ -57,9 +47,6 @@ typedef enum {
 
 /** The id used to relate the client code to the server storage. */
 @property (readonly, nonatomic) NSString* appId;
-
-/** Current state (see SyncpointState enum above). Observable. */
-@property (readonly, nonatomic) SyncpointState state;
 
 /** The session object, which manages channels and subscriptions. */
 @property (readonly) SyncpointSession* session;
