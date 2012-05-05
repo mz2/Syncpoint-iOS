@@ -46,7 +46,7 @@
 - (void) updateString {
     NSString* channelName = channelNameField.text;
     DemoAppDelegate *delegate = (DemoAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [delegate.syncpoint.session installChannelNamed:channelName toDatabase:nil error:nil];
+    [delegate.syncpoint myChannelNamed:channelName error:nil];
     [self pop];
 }
 

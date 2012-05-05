@@ -358,16 +358,6 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
 }
 
 
-- (SyncpointInstallation*) allInstallations {
-    SyncpointChannel* channel = self.channel;
-    // TODO: Make this into a view query
-    for (SyncpointInstallation* inst in modelsOfType(self.database, @"installation"))
-        if (inst.channel == channel)
-            return inst;
-    return nil;
-}
-
-
 - (SyncpointInstallation*) makeInstallationWithLocalDatabase: (CouchDatabase*)localDB
                                                        error: (NSError**)outError
 {
