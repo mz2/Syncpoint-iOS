@@ -157,6 +157,8 @@
 /** The session this is associated with. */
 @property (readonly) SyncpointSession* session;
 
+- (void) sync;
+
 - (BOOL) uninstall: (NSError**)outError;
 
 @end

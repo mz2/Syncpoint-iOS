@@ -62,10 +62,12 @@
         // Create the control database on the first run of the app.
         _localControlDatabase = [self setupControlDatabaseNamed: kLocalControlDatabaseName error: outError];
         if (!_localControlDatabase) return nil;
+
         _session = [SyncpointSession sessionInDatabase: _localControlDatabase];
         if (!_session) { // if no session make one
             _session = [SyncpointSession makeSessionInDatabase: _localControlDatabase
                                                          appId: _appId
+                                              withRemoteServer: _remote
                                                          error: nil];   // TODO: Report error
         }
         if (nil != _session.error) {
@@ -85,33 +87,6 @@
 - (void)dealloc {
     [self stopObservingControlPull];
     [[NSNotificationCenter defaultCenter] removeObserver: self];
-}
-
-
-- (CouchDatabase*) setupControlDatabaseNamed: (NSString*)name error: (NSError**)outError {
-    CouchDatabase* database = [_server databaseNamed: kLocalControlDatabaseName];
-    if (![database ensureCreated: outError])
-        return nil;
-    
-    // Create a 'view' of known channels by owner:
-    CouchDesignDocument* design = [database designDocumentWithName: @"syncpoint"];
-    [design defineViewNamed: @"channels" mapBlock: MAPBLOCK({
-        NSString* type = $castIf(NSString, [doc objectForKey: @"type"]);
-        if ([type isEqualToString:@"channel"]) {
-            emit([doc objectForKey: @"owner_id"], doc);
-        }
-    }) version: @"1.1"];
-    
-    database.tracksChanges = YES;
-    return database;
-}
-
-- (CouchLiveQuery*) myChannelsQuery {
-    CouchLiveQuery* query = [[[_localControlDatabase designDocumentWithName: @"syncpoint"]
-                              queryViewNamed: @"channels"] asLiveQuery];
-    query.descending = YES;
-    query.keys = $array(_session.owner_id);
-    return query;
 }
 
 
@@ -143,6 +118,38 @@
 
 
 
+
+#pragma mark - Views and Queries
+
+- (CouchLiveQuery*) myChannelsQuery {
+    CouchLiveQuery* query = [[[_localControlDatabase designDocumentWithName: @"syncpoint"]
+                              queryViewNamed: @"channels"] asLiveQuery];
+    query.descending = YES;
+    query.keys = $array(_session.owner_id);
+    return query;
+}
+
+- (CouchDatabase*) setupControlDatabaseNamed: (NSString*)name error: (NSError**)outError {
+    CouchDatabase* database = [_server databaseNamed: name];
+    if (![database ensureCreated: outError])
+        return nil;
+    
+    // Create a 'view' of known channels by owner:
+    CouchDesignDocument* design = [database designDocumentWithName: @"syncpoint"];
+    [design defineViewNamed: @"channels" mapBlock: MAPBLOCK({
+        NSString* type = $castIf(NSString, [doc objectForKey: @"type"]);
+        if ([type isEqualToString:@"channel"]) {
+            emit([doc objectForKey: @"owner_id"], doc);
+        }
+    }) version: @"1.1"];
+    
+    database.tracksChanges = YES;
+    return database;
+}
+
+
+#pragma mark - Pairing with cloud
+
 - (void) pairSessionWithType: (NSString*)pairingType andToken: (NSString*)pairingToken {
     if (_session.isPaired) return;
     [_session setValue: pairingType ofProperty: @"pairing_type"];
@@ -151,49 +158,13 @@
     [self beginPairing];
 }
 
-
-#pragma mark - CONTROL DATABASE & SYNC:
-
-
-- (CouchReplication*) pullControlDataFromDatabaseNamed: (NSString*)dbName {
-    NSURL* url = [NSURL URLWithString: dbName relativeToURL: _remote];
-    return [_localControlDatabase pullFromDatabaseAtURL: url];
-}
-
-- (CouchReplication*) pushControlDataToDatabaseNamed: (NSString*)dbName {
-    NSURL* url = [NSURL URLWithString: dbName relativeToURL: _remote];
-    return [_localControlDatabase pushToDatabaseAtURL: url];
-}
-
-- (void) pairingDidComplete: (CouchDocument*)userDoc {
-    NSMutableDictionary* props = [[userDoc properties] mutableCopy];
-
-    [_session setValue:@"paired" forKey:@"state"];
-    [_session setValue:[props valueForKey:@"owner_id"] ofProperty:@"owner_id"];
-    [_session setValue:[props valueForKey:@"control_database"] ofProperty:@"control_database"];
-    RESTOperation* op = [_session save];
-    [op onCompletion:^{
-        LogTo(Syncpoint, @"Device is now paired");
-        [props setObject:[NSNumber numberWithBool:YES] forKey:@"_deleted"];
-        [[userDoc currentRevision] putProperties: props];
-        [self connectToControlDB];
-    }];
-}
-
-- (void) waitForPairingToComplete: (CouchDocument*)userDoc {
-    MYAfterDelay(3.0, ^{
-        RESTOperation* op = [userDoc GET];
-        [op onCompletion:^{
-            NSDictionary* resp = $castIf(NSDictionary, op.responseBody.fromJSON);
-            NSString* state = [resp objectForKey:@"pairing_state"];
-            if ([state isEqualToString:@"paired"]) {
-                [self pairingDidComplete: userDoc];
-            } else {
-                [self waitForPairingToComplete: userDoc];                
-            }
-        }];
-        [op start];
-    });
+- (void) beginPairing {
+    LogTo(Syncpoint, @"Pairing session...");
+    if (_session.isReadyToPair) {
+        Assert(!_session.isPaired);
+        [_session clearState: nil];
+        [self savePairingUserToRemote];
+    }
 }
 
 - (void) savePairingUserToRemote {
@@ -222,36 +193,49 @@
     [op start];
 }
 
-- (void) beginPairing {
-    LogTo(Syncpoint, @"Pairing session...");
-    if (_session.isReadyToPair) {
-        Assert(!_session.isPaired);
-        [_session clearState: nil];
-        [self savePairingUserToRemote];
-    }
+- (void) waitForPairingToComplete: (CouchDocument*)userDoc {
+    MYAfterDelay(3.0, ^{
+        RESTOperation* op = [userDoc GET];
+        [op onCompletion:^{
+            NSDictionary* resp = $castIf(NSDictionary, op.responseBody.fromJSON);
+            NSString* state = [resp objectForKey:@"pairing_state"];
+            if ([state isEqualToString:@"paired"]) {
+                [self pairingDidComplete: userDoc];
+            } else {
+                [self waitForPairingToComplete: userDoc];                
+            }
+        }];
+        [op start];
+    });
+}
+
+- (void) pairingDidComplete: (CouchDocument*)userDoc {
+    NSMutableDictionary* props = [[userDoc properties] mutableCopy];
+
+    [_session setValue:@"paired" forKey:@"state"];
+    [_session setValue:[props valueForKey:@"owner_id"] ofProperty:@"owner_id"];
+    [_session setValue:[props valueForKey:@"control_database"] ofProperty:@"control_database"];
+    RESTOperation* op = [_session save];
+    [op onCompletion:^{
+        LogTo(Syncpoint, @"Device is now paired");
+        [props setObject:[NSNumber numberWithBool:YES] forKey:@"_deleted"];
+        [[userDoc currentRevision] putProperties: props];
+        [self connectToControlDB];
+    }];
 }
 
 
-// Begins observing document changes in the _localControlDatabase.
-- (void) observeControlDatabase {
-    Assert(_localControlDatabase);
-    [[NSNotificationCenter defaultCenter] addObserver: self 
-                                             selector: @selector(controlDatabaseChanged)
-                                                 name: kCouchDatabaseChangeNotification 
-                                               object: _localControlDatabase];
+#pragma mark - Connect to Control Database
+
+- (CouchReplication*) pullControlDataFromDatabaseNamed: (NSString*)dbName {
+    NSURL* url = [NSURL URLWithString: dbName relativeToURL: _remote];
+    return [_localControlDatabase pullFromDatabaseAtURL: url];
 }
 
-- (void) controlDatabaseChanged {
-    // if we are done with first ever sync
-    if (_session.control_db_synced) {
-        LogTo(Syncpoint, @"Control DB changed");
-        // collect 1 second of changes before acting
-        MYAfterDelay(1.0, ^{
-            [self getUpToDateWithSubscriptions];
-        });
-    }
+- (CouchReplication*) pushControlDataToDatabaseNamed: (NSString*)dbName {
+    NSURL* url = [NSURL URLWithString: dbName relativeToURL: _remote];
+    return [_localControlDatabase pushToDatabaseAtURL: url];
 }
-
 
 // Start bidirectional sync with the control database.
 - (void) connectToControlDB {
@@ -275,6 +259,7 @@
         // That way we know when the control DB has been fully updated from the server.
         // Once it has stopped, we can fire the didSyncControlDB event on the session,
         // and restart the sync in continuous mode.
+        LogTo(Syncpoint, @"doInitialSyncOfControlDB");
         _controlPull = [self pullControlDataFromDatabaseNamed: _session.control_database];
         [_controlPull addObserver: self forKeyPath: @"running" options: 0 context: NULL];
         _observingControlPull = YES;
@@ -292,12 +277,14 @@
     });
 }
 
-// Observes when the initial _controlPull stops running, after -connectToControlDB.
+// Observes when the initial _controlPull stops running, after -doInitialSyncOfControlDB.
 - (void) observeValueForKeyPath: (NSString*)keyPath ofObject: (id)object 
                          change: (NSDictionary*)change context: (void*)context
 {
     if (object == _controlPull && !_controlPull.running) {
+//        first Control database sync is done
         [self stopObservingControlPull];
+        [self mergeExistingChannels];
         [self didInitialSyncOfControlDB];
     }
 }
@@ -307,6 +294,31 @@
     if (_observingControlPull) {
         [_controlPull removeObserver: self forKeyPath: @"running"];
         _observingControlPull = NO;
+    }
+}
+
+
+
+#pragma mark - React to Control Database Changes
+
+
+// Begins observing document changes in the _localControlDatabase.
+- (void) observeControlDatabase {
+    Assert(_localControlDatabase);
+    [[NSNotificationCenter defaultCenter] addObserver: self 
+                                             selector: @selector(controlDatabaseChanged)
+                                                 name: kCouchDatabaseChangeNotification 
+                                               object: _localControlDatabase];
+}
+
+- (void) controlDatabaseChanged {
+    // if we are done with first ever sync
+    if (_session.control_db_synced) {
+        LogTo(Syncpoint, @"Control DB changed");
+        // collect 1 second of changes before acting
+        MYAfterDelay(1.0, ^{
+            [self getUpToDateWithSubscriptions];
+        });
     }
 }
 
@@ -325,19 +337,14 @@
     // Sync all installations whose channels are ready:
     for (SyncpointInstallation* inst in _session.allInstallations)
         if (inst.channel.isReady)
-            [self syncInstallation: inst];
+            [inst sync];
 }
 
+#pragma mark - Merge Session Data on Initial Pairing Sync
 
-// Starts bidirectional sync of an application database with its server counterpart.
-- (void) syncInstallation: (SyncpointInstallation*)installation {
-    CouchDatabase *localChannelDb = installation.localDatabase;
-    NSURL *cloudChannelURL = [NSURL URLWithString: installation.channel.cloud_database
-                                    relativeToURL: _remote];
-    LogTo(Syncpoint, @"Syncing local db '%@' with remote %@", localChannelDb, cloudChannelURL);
-    NSArray* repls = [localChannelDb replicateWithURL: cloudChannelURL exclusively: NO];
-    for (CouchPersistentReplication* repl in repls)
-        repl.continuous = YES;
+
+- (void) mergeExistingChannels {
+    
 }
 
 

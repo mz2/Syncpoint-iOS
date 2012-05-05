@@ -27,6 +27,7 @@
     @return  The new SyncpointSession instance. */
 + (SyncpointSession*) makeSessionInDatabase: (CouchDatabase*)database
                                       appId: (NSString*)appId
+                           withRemoteServer: (NSURL*) remote
                                       error: (NSError**)outError;
 
 @property (readwrite) NSDictionary* oauth_creds;

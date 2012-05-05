@@ -112,6 +112,7 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
 
 + (SyncpointSession*) makeSessionInDatabase: (CouchDatabase*)database
                                       appId: (NSString*)appId
+                           withRemoteServer: (NSURL*) remote
                                       error: (NSError**)outError
 {
     // Register the other model classes with the database's model factory:
@@ -126,6 +127,7 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
     
     SyncpointSession* session = [[self alloc] initWithNewDocumentInDatabase: database];
     [session setValue: appId ofProperty: @"app_id"];
+    [session setValue: [remote absoluteString] ofProperty: @"syncpoint_url"];
     session.state = @"new";
     
     
@@ -279,7 +281,7 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
     if(![self controlDBSynced]) {
         self.control_db_synced = YES;
         [[self save] wait: nil];
-        [self doPendingInstalls];
+        [self doPendingInstalls]; // move this out to client?
     }
 }
 
@@ -497,6 +499,17 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
 - (bool) isLocal {
     SyncpointSession* session = [SyncpointSession sessionInDatabase: self.database];
     return [session.document.documentID isEqual: [self getValueOfProperty: @"session_id"]];
+}
+
+// Starts bidirectional sync of an application database with its server counterpart.
+- (void) sync {
+    CouchDatabase *localChannelDb = self.localDatabase;
+    NSURL *cloudChannelURL = [NSURL URLWithString: self.channel.cloud_database
+                                    relativeToURL: [NSURL URLWithString:[self.session getValueOfProperty:@"syncpoint_url"]]];
+    LogTo(Syncpoint, @"Sync local db '%@' with remote %@", localChannelDb, cloudChannelURL);
+    NSArray* repls = [localChannelDb replicateWithURL: cloudChannelURL exclusively: NO];
+    for (CouchPersistentReplication* repl in repls)
+        repl.continuous = YES;
 }
 
 - (BOOL) uninstall: (NSError**)outError {
