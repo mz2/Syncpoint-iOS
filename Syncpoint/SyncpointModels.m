@@ -30,7 +30,7 @@ static NSString* randomString(void) {
 //TODO: This would be useful as a method in CouchModelFactory or CouchDatabase...
 static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
     NSEnumerator* e = [[database getAllDocuments] rows];
-    LogTo(Syncpoint, @"modelsOfType %@ for database with %u docs", type, [[[database getAllDocuments] rows] count]);
+//    LogTo(Syncpoint, @"modelsOfType %@ for database with %u docs", type, [[[database getAllDocuments] rows] count]);
     return [e my_map: ^(CouchQueryRow* row) {
         if ([type isEqual: [row.documentProperties objectForKey: @"type"]]) {
             CouchModel* model = [CouchModel modelForDocument: row.document];
@@ -247,6 +247,19 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
     }];
 }
 
+- (NSEnumerator*) unpairedChannels {
+    // TODO: Make this into a view query
+    return [modelsOfType(self.database, @"channel") my_map: ^(SyncpointChannel* channel) {
+        return channel.unpaired ? channel : nil;
+    }];
+}
+
+- (NSEnumerator*) myChannels {
+    // TODO: Make this into a view query
+    return [modelsOfType(self.database, @"channel") my_map: ^(SyncpointChannel* channel) {
+        return ([channel.owner_id isEqual: self.owner_id]) ? channel : nil;
+    }];
+}
 
 - (NSEnumerator*) activeSubscriptions {
     // TODO: Make this into a view query
@@ -286,6 +299,9 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
     return [self.state isEqual: @"ready"];
 }
 
+- (bool) unpaired {
+    return [self.state isEqual: @"unpaired"];
+}
 
 - (SyncpointSubscription*) subscription {
     // TODO: Make this into a view query
@@ -350,7 +366,7 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
 
 @implementation SyncpointSubscription
 
-@dynamic channel;
+@dynamic channel, owner_id;
 
 
 - (SyncpointInstallation*) installation {
@@ -379,7 +395,8 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
     [inst setValue: @"installation" ofProperty: @"type"];
     inst.state = @"created";
     inst.session = [SyncpointSession sessionInDatabase: self.database];
-    [inst setValue: [self getValueOfProperty: @"owner_id"] ofProperty: @"owner_id"];
+    inst.owner_id = self.owner_id;
+//    [inst setValue: [self getValueOfProperty: @"owner_id"] ofProperty: @"owner_id"];
     inst.channel = self.channel;
     inst.subscription = self;
     [inst setValue: name ofProperty: @"local_db_name"];
@@ -403,7 +420,7 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
 
 @implementation SyncpointInstallation
 
-@dynamic subscription, channel, session;
+@dynamic subscription, channel, session, owner_id;
 
 - (CouchDatabase*) localDatabase {
     if (!self.isLocal)

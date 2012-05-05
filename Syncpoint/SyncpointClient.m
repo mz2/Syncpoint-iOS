@@ -220,18 +220,12 @@
 
 // Start bidirectional sync with the control database.
 - (void) connectToControlDB {
-    NSString* controlDBName = _session.control_database;
-    LogTo(Syncpoint, @"Syncing with control database %@", controlDBName);
-    Assert(controlDBName);
-    
+    LogTo(Syncpoint, @"connectToControlDB %@", _session.control_database);    
     if (!_session.control_db_synced) {
         [self doInitialSyncOfControlDB]; // sync once before we write
     } else {
         [self didInitialSyncOfControlDB]; // go continuous
     }
-
-    _controlPush = [self pushControlDataToDatabaseNamed: controlDBName];
-    _controlPush.continuous = YES;
 }
 
 - (void) doInitialSyncOfControlDB {
@@ -249,8 +243,11 @@
 
 - (void) didInitialSyncOfControlDB {
     LogTo(Syncpoint, @"didInitialSyncOfControlDB");
+    // Now we can sync continuously & push
     _controlPull = [self pullControlDataFromDatabaseNamed: _session.control_database];
-    _controlPull.continuous = YES; // Now we can sync continuously
+    _controlPull.continuous = YES; 
+    _controlPush = [self pushControlDataToDatabaseNamed: _session.control_database];
+    _controlPush.continuous = YES;
     [_session didFirstSyncOfControlDB];
     MYAfterDelay(1.0, ^{
         [self getUpToDateWithSubscriptions];
@@ -297,6 +294,7 @@
     if (_session.control_db_synced) {
         LogTo(Syncpoint, @"Control DB changed");
         // collect 1 second of changes before acting
+//        todo can we make these calls all collapse into one?
         MYAfterDelay(1.0, ^{
             [self getUpToDateWithSubscriptions];
         });
@@ -325,8 +323,53 @@
 
 
 - (void) mergeExistingChannels {
-    
+    LogTo(Syncpoint, @"mergeExistingChannels");
+    NSEnumerator* pairedChannels = _session.myChannels;
+    BOOL matched;
+    for (SyncpointChannel* unpaired in _session.unpairedChannels) {
+        matched = NO;
+        for (SyncpointChannel* paired in pairedChannels) {
+            if ([paired.name isEqual:unpaired.name]) {
+                matched = YES;
+                [self mergeUnpairedChannel: unpaired intoPairedChannel: paired];
+            }
+        }
+        if (!matched) {
+            unpaired.state = @"new";
+            unpaired.owner_id = _session.owner_id;
+            [[unpaired save] wait];
+        }
+    }
 }
+
+//        if remote subscription exists
+//            replace local subscription with remote subscription (update local install if exists)
+//            else
+//                update local subscription with cloud channel id
+//                update local installation channel_id of cloud channel
+- (void) mergeUnpairedChannel: (SyncpointChannel*) unpaired 
+            intoPairedChannel: (SyncpointChannel*) paired {
+    SyncpointSubscription* unpairedSub = unpaired.subscription;
+    SyncpointSubscription* pairedSub = paired.subscription;
+    SyncpointInstallation* unpairedInst = unpaired.installation;
+    if (pairedSub) {
+        if (unpairedInst) {
+            unpairedInst.subscription = paired.subscription;
+        }
+        [[unpairedSub deleteDocument] wait];
+    } else {
+        unpairedSub.channel = paired;
+        unpairedSub.owner_id = paired.owner_id;
+        [[unpairedSub save] wait];
+    }
+    if (unpairedInst) {
+        unpairedInst.owner_id = paired.owner_id;
+        unpairedInst.channel = paired;
+        [[unpairedInst save] wait];
+    }
+    [[unpaired deleteDocument] wait];
+}
+
 
 
 @end

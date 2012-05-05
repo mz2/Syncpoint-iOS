@@ -50,6 +50,10 @@
 /** Enumerates all channels of this session that are in the "ready" state. */
 @property (readonly) NSEnumerator* readyChannels;
 
+@property (readonly) NSEnumerator* unpairedChannels;
+
+@property (readonly) NSEnumerator* myChannels;
+
 /** Enumerates all subscriptions in this session that are in the "active" state. */
 @property (readonly) NSEnumerator* activeSubscriptions;
 
@@ -71,10 +75,13 @@
 
 /** The ID of the user who created/owns this channel.
     Not necessarily the same as the ID of the local user! */
-@property (readonly) NSString* owner_id;
+@property (readwrite) NSString* owner_id;
 
 /** Is the channel set up on the server and ready for use? */
 @property (readonly) bool isReady;
+
+@property (readonly) bool unpaired;
+
 
 /** The local user's subscription to the channel, if any. */
 @property (readonly) SyncpointSubscription* subscription;
@@ -103,6 +110,9 @@
 /** The local installation of this subscription, if this device is subscribed. */
 @property (readonly) SyncpointInstallation* installation;
 
+
+@property (readwrite) NSString* owner_id;
+
 /** Creates a local installation of this channel, synced to the given database.
     This doesn't care whether a local installation already exists -- if so, you'll now have two,
     which can be confusing (and duplicates bandwidth) and is probably not what you wanted.
@@ -123,6 +133,8 @@
 
 /** Is this installation specific to this device? */
 @property (readonly) bool isLocal;
+
+@property (readwrite) NSString* owner_id;
 
 /** The local database to sync. */
 @property (readonly) CouchDatabase* localDatabase;
