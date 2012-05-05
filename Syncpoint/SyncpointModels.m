@@ -130,8 +130,6 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
     [session setValue: [remote absoluteString] ofProperty: @"syncpoint_url"];
     session.state = @"new";
     
-    
-    
     NSDictionary* oauth_creds = $dict({@"consumer_key", randomString()},
                                       {@"consumer_secret", randomString()},
                                       {@"token_secret", randomString()},
@@ -211,8 +209,14 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
     LogTo(Syncpoint, @"Create channel named '%@'", name);
     SyncpointChannel* channel = [[SyncpointChannel alloc] initWithNewDocumentInDatabase: self.database];
     [channel setValue: @"channel" ofProperty: @"type"];
-    [channel setValue: self.owner_id ofProperty: @"owner_id"];
-    channel.state = @"new";
+    
+    if (self.owner_id) {
+        [channel setValue: self.owner_id ofProperty: @"owner_id"];
+        channel.state = @"new";
+    } else {
+        channel.state = @"unpaired";
+    }
+
     channel.name = name;
     return [[channel save] wait: outError] ? channel : nil;
 }
@@ -452,7 +456,7 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
         name = [@"channel-" stringByAppendingString: randomString()];
         localDB = [self.database.server databaseNamed: name];
     }
-    
+
     LogTo(Syncpoint, @"Installing %@ to %@", self, localDB);
     if (![localDB ensureCreated: nil]) {
         Warn(@"SyncpointSubscription could not create channel db %@", name);

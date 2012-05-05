@@ -22,7 +22,7 @@
 
 #define kSyncpointAppId @"demo-app"
 // lowercase required:
-#define kDefaultChannelName @"groceries"
+#define kDefaultChannelName @"Groceries"
 #define sFacebookAppID @"251541441584833"
 
 @implementation DemoAppDelegate
@@ -54,9 +54,10 @@
         return YES;
     }
 
-    CouchDatabase *database = [syncpoint databaseForMyChannelNamed: kDefaultChannelName error: &error];
+    SyncpointChannel *channel = [self.syncpoint myChannelNamed: kDefaultChannelName error:&error];
+    CouchDatabase *database = [channel ensureLocalDatabase:&error];
     
-    if (!database) {
+    if (error) {
         NSLog(@"error <%@>", error);
         [self showAlert: @"Couldn't create local channel." error: error fatal: YES];
         return YES;

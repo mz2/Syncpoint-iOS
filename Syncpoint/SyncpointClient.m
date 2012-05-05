@@ -90,33 +90,41 @@
 }
 
 
-- (CouchDatabase*) databaseForMyChannelNamed: (NSString*) channelName error: (NSError**)error {
+//- (CouchDatabase*) databaseForMyChannelNamed: (NSString*) channelName error: (NSError**)error {
+//    SyncpointChannel* channel = [_session myChannelWithName:channelName];
+//    CouchDatabase* database;
+//    if (channel) {
+//        NSLog(@"has channel %@", channelName);
+//        database = [channel localDatabase];
+//        if (database) return database;
+//        database = [_server databaseNamed: channelName];
+//        [database ensureCreated: error];
+//        if (*error) return nil;
+//        [channel makeInstallationWithLocalDatabase: database error:error];
+//        if (*error) return nil;
+//        return database;
+//    } else {
+//        NSLog(@"make channel %@ in server %@", channelName, _server.description);
+//        database = [_server databaseNamed: channelName];
+//        [database ensureCreated: error];
+//        if (*error) return nil;
+//        [_session installChannelNamed: channelName
+//                           toDatabase: database
+//                                error: error];
+//        if (*error) return nil;
+//        return database;
+//    }
+//}
+
+- (SyncpointChannel*) myChannelNamed: (NSString*)channelName 
+                               error: (NSError**)error {
     SyncpointChannel* channel = [_session myChannelWithName:channelName];
-    CouchDatabase* database;
-    if (channel) {
-        NSLog(@"has channel %@", channelName);
-        database = [channel localDatabase];
-        if (database) return database;
-        database = [_server databaseNamed: channelName];
-        [database ensureCreated: error];
+    if (!channel) {
+        channel = [_session makeChannelWithName: channelName error:error];
         if (*error) return nil;
-        [channel makeInstallationWithLocalDatabase: database error:error];
-        if (*error) return nil;
-        return database;
-    } else {
-        NSLog(@"make channel %@ in server %@", channelName, _server.description);
-        database = [_server databaseNamed: channelName];
-        [database ensureCreated: error];
-        if (*error) return nil;
-        [_session installChannelNamed: channelName
-                           toDatabase: database
-                                error: error];
-        if (*error) return nil;
-        return database;
     }
+    return channel;
 }
-
-
 
 
 #pragma mark - Views and Queries
