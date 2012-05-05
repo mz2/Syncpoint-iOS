@@ -37,7 +37,7 @@
 @property (readonly) NSString* control_database;
 @property (readwrite) BOOL control_db_synced;
 
-- (void) didSyncControlDB;
+- (void) didFirstSyncOfControlDB;
 
 - (BOOL) clearState: (NSError**)outError;
 

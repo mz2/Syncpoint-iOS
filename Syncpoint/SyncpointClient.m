@@ -251,7 +251,7 @@
     LogTo(Syncpoint, @"Syncing with control database %@", controlDBName);
     Assert(controlDBName);
     
-    if (![_session controlDBSynced]) {
+    if (!_session.control_db_synced) {
         [self doInitialSyncOfControlDB]; // sync once before we write
     } else {
         [self didInitialSyncOfControlDB]; // go continuous
@@ -278,7 +278,7 @@
     LogTo(Syncpoint, @"didInitialSyncOfControlDB");
     _controlPull = [self pullControlDataFromDatabaseNamed: _session.control_database];
     _controlPull.continuous = YES; // Now we can sync continuously
-    [_session didSyncControlDB];
+    [_session didFirstSyncOfControlDB];
     MYAfterDelay(1.0, ^{
         [self getUpToDateWithSubscriptions];
         [self observeControlDatabase];
