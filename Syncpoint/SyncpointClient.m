@@ -105,8 +105,14 @@
 - (CouchLiveQuery*) myChannelsQuery {
     CouchLiveQuery* query = [[[_localControlDatabase designDocumentWithName: @"syncpoint"]
                               queryViewNamed: @"channels"] asLiveQuery];
+    id owner;
+    if (_session.owner_id) {
+        owner = _session.owner_id;
+    } else {
+        owner = @"unpaired";
+    }
     query.descending = YES;
-    query.keys = $array(_session.owner_id);
+    query.keys = $array(owner);
     return query;
 }
 

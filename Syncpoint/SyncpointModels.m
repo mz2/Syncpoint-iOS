@@ -204,9 +204,11 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
     [channel setValue: @"channel" ofProperty: @"type"];
     
     if (self.owner_id) {
-        [channel setValue: self.owner_id ofProperty: @"owner_id"];
+//        [channel setValue: self.owner_id ofProperty: @"owner_id"];
+        channel.owner_id = self.owner_id;
         channel.state = @"new";
     } else {
+        channel.owner_id = @"unpaired";
         channel.state = @"unpaired";
     }
 
@@ -217,6 +219,8 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
 
 - (SyncpointChannel*) channelWithName: (NSString*)name andOwner: (NSString*)ownerId{
     // TODO: Make this into a view query
+    LogTo(Syncpoint, @"Looking for channel named %@ with owner_id %@", name, ownerId);
+
     for (SyncpointChannel* channel in modelsOfType(self.database, @"channel")) {
         LogTo(Syncpoint, @"Saw channel named %@ with owner_id %@ and state %@", channel.name, channel.owner_id, channel.state);
         if (![channel.state isEqual: @"error"] && [channel.name isEqual: name] && [channel.owner_id isEqual:ownerId])
@@ -228,7 +232,14 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
 }
 
 - (SyncpointChannel*) myChannelWithName: (NSString*)name {
-    return [self channelWithName:name andOwner:self.owner_id];
+    id owner;
+    if (self.owner_id) {
+        owner = self.owner_id;
+    } else {
+        owner = @"unpaired";
+    }
+    
+    return [self channelWithName:name andOwner:owner];
 }
 
 
