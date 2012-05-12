@@ -17,8 +17,8 @@
 #import "ChecklistViewController.h"
 #import <Syncpoint/Syncpoint.h>
 
-
-#define kServerURLString @"http://jchrisa.iriscouch.com/"
+// you probably want to make this a URL you can reach easily from your phone
+#define kServerURLString @"http://localhost:5984"
 
 #define kSyncpointAppId @"demo-app"
 // lowercase required:
