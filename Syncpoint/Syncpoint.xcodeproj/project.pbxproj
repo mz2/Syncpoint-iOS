@@ -23,7 +23,6 @@
 
 /* Begin PBXBuildFile section */
 		27108C6C15126A6500E5B92C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27108C6B15126A6500E5B92C /* Security.framework */; };
-		27108C8615127F6300E5B92C /* libfacebook_mac_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27108C8515127F6300E5B92C /* libfacebook_mac_sdk.a */; };
 		27108C8815127F9200E5B92C /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27108C8715127F9200E5B92C /* AppKit.framework */; };
 		27108C901512841600E5B92C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27108C8F1512841600E5B92C /* Cocoa.framework */; };
 		27108CBA1512843100E5B92C /* DemoAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27108CAD1512843100E5B92C /* DemoAppController.m */; };
@@ -37,6 +36,7 @@
 		278495F0150AC44100A41C44 /* libCouchCocoa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 278495EF150AC44100A41C44 /* libCouchCocoa.a */; };
 		27849608150C195400A41C44 /* SyncpointInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 27849607150C195400A41C44 /* SyncpointInternal.h */; };
 		27849609150C195400A41C44 /* SyncpointInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 27849607150C195400A41C44 /* SyncpointInternal.h */; };
+		278E4DBE1561937A00DDCEF9 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278E4DBD1561937A00DDCEF9 /* CFNetwork.framework */; };
 		2799D2091507D74C00CB90E0 /* SyncpointModels.h in Headers */ = {isa = PBXBuildFile; fileRef = 2799D2071507D74B00CB90E0 /* SyncpointModels.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2799D20A1507D74C00CB90E0 /* SyncpointModels.h in Headers */ = {isa = PBXBuildFile; fileRef = 2799D2071507D74B00CB90E0 /* SyncpointModels.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2799D20B1507D74C00CB90E0 /* SyncpointModels.m in Sources */ = {isa = PBXBuildFile; fileRef = 2799D2081507D74B00CB90E0 /* SyncpointModels.m */; };
@@ -148,6 +148,7 @@
 		27108CE115128FB000E5B92C /* MYURLHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MYURLHandler.m; path = ../../TouchDB/vendor/MYUtilities/MYURLHandler.m; sourceTree = "<group>"; };
 		278495EF150AC44100A41C44 /* libCouchCocoa.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libCouchCocoa.a; path = "../build/Syncpoint/Build/Products/Debug-iphonesimulator/libCouchCocoa.a"; sourceTree = "<group>"; };
 		27849607150C195400A41C44 /* SyncpointInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncpointInternal.h; sourceTree = "<group>"; };
+		278E4DBD1561937A00DDCEF9 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
 		2799D2061506F7AD00CB90E0 /* Schema.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = Schema.md; sourceTree = "<group>"; };
 		2799D2071507D74B00CB90E0 /* SyncpointModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SyncpointModels.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2799D2081507D74B00CB90E0 /* SyncpointModels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SyncpointModels.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -182,7 +183,7 @@
 		27EB95A214F87C9700072752 /* list_area___checkbox___unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "list_area___checkbox___unchecked.png"; sourceTree = "<group>"; };
 		27EB95A314F87C9700072752 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		27EB95A414F87C9700072752 /* MainWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
-		27EB95A514F87C9700072752 /* ChecklistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lineEnding = 0; path = ChecklistViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		27EB95A514F87C9700072752 /* ChecklistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ChecklistViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		27EB95A614F87C9700072752 /* ChecklistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ChecklistViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		27EB95A714F87C9700072752 /* ChecklistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChecklistViewController.xib; sourceTree = "<group>"; };
 		27EB95B614F87CDB00072752 /* Syncpoint Demo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Syncpoint Demo-Info.plist"; sourceTree = "<group>"; };
@@ -230,7 +231,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				27108C8815127F9200E5B92C /* AppKit.framework in Frameworks */,
-				27108C8615127F6300E5B92C /* libfacebook_mac_sdk.a in Frameworks */,
 				27108C6C15126A6500E5B92C /* Security.framework in Frameworks */,
 				27EB94FF14F7044900072752 /* SystemConfiguration.framework in Frameworks */,
 				27EB94FD14F7044300072752 /* libz.dylib in Frameworks */,
@@ -253,6 +253,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				278E4DBE1561937A00DDCEF9 /* CFNetwork.framework in Frameworks */,
 				27EB95C314F96AA100072752 /* libz.dylib in Frameworks */,
 				27EB95C114F966BB00072752 /* SystemConfiguration.framework in Frameworks */,
 				27EB95BF14F966B500072752 /* Security.framework in Frameworks */,
@@ -299,6 +300,7 @@
 		27EB949C14F700AC00072752 = {
 			isa = PBXGroup;
 			children = (
+				278E4DBD1561937A00DDCEF9 /* CFNetwork.framework */,
 				27EDEA531513F2200060EDB9 /* Syncpoint.h */,
 				27EB94CB14F7015800072752 /* SyncpointClient.h */,
 				27EB94CC14F7015800072752 /* SyncpointClient.m */,
@@ -766,7 +768,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 0.1;
@@ -805,7 +807,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 0.1;

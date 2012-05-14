@@ -75,7 +75,7 @@
 
 /** The ID of the user who created/owns this channel.
     Not necessarily the same as the ID of the local user! */
-@property (readwrite) NSString* owner_id;
+@property (readwrite, copy) NSString* owner_id;
 
 /** Is the channel set up on the server and ready for use? */
 @property (readonly) bool isReady;
@@ -111,7 +111,7 @@
 @property (readonly) SyncpointInstallation* installation;
 
 
-@property (readwrite) NSString* owner_id;
+@property (readwrite, copy) NSString* owner_id;
 
 /** Creates a local installation of this channel, synced to the given database.
     This doesn't care whether a local installation already exists -- if so, you'll now have two,
@@ -134,7 +134,7 @@
 /** Is this installation specific to this device? */
 @property (readonly) bool isLocal;
 
-@property (readwrite) NSString* owner_id;
+@property (readwrite, copy) NSString* owner_id;
 
 /** The local database to sync. */
 @property (readonly) CouchDatabase* localDatabase;
