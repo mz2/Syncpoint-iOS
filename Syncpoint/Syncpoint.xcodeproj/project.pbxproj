@@ -300,7 +300,6 @@
 		27EB949C14F700AC00072752 = {
 			isa = PBXGroup;
 			children = (
-				278E4DBD1561937A00DDCEF9 /* CFNetwork.framework */,
 				27EDEA531513F2200060EDB9 /* Syncpoint.h */,
 				27EB94CB14F7015800072752 /* SyncpointClient.h */,
 				27EB94CC14F7015800072752 /* SyncpointClient.m */,
@@ -331,6 +330,7 @@
 		27EB94AA14F700AC00072752 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				278E4DBD1561937A00DDCEF9 /* CFNetwork.framework */,
 				790DE3C31540955700A0C072 /* facebook-ios-sdk */,
 				27108C8715127F9200E5B92C /* AppKit.framework */,
 				27108C8515127F6300E5B92C /* libfacebook_mac_sdk.a */,
