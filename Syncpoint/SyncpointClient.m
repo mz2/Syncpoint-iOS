@@ -35,7 +35,8 @@
 }
 
 
-@synthesize localServer=_server, session=_session, appId=_appId;
+@synthesize localServer=_server, session=_session, appId=_appId,
+    localControlDatabase=_localControlDatabase;
 
 
 - (id) initWithRemoteServer: (NSURL*)remoteServerURL

@@ -52,5 +52,7 @@
 /** The session object, which manages channels and subscriptions. */
 @property (readonly) SyncpointSession* session;
 
+@property (readonly) CouchDatabase* localControlDatabase;
+
 
 @end

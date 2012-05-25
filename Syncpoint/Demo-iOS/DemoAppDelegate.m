@@ -21,8 +21,6 @@
 #define kServerURLString @"http://localhost:5984"
 
 #define kSyncpointAppId @"demo-app"
-// lowercase required:
-#define kDefaultChannelName @"Groceries"
 #define sFacebookAppID @"251541441584833"
 
 @implementation DemoAppDelegate
@@ -54,14 +52,7 @@
         return YES;
     }
 
-    SyncpointChannel *channel = [self.syncpoint myChannelNamed: kDefaultChannelName error:&error];
-    CouchDatabase *database = [channel ensureLocalDatabase:&error];
-    
-    if (error) {
-        NSLog(@"error <%@>", error);
-        [self showAlert: @"Couldn't create local channel." error: error fatal: YES];
-        return YES;
-    }
+    CouchDatabase *database = self.syncpoint.localControlDatabase;
 
     database.tracksChanges = YES;
     NSLog(@"...using CouchDatabase at <%@>", database.URL);
@@ -69,7 +60,7 @@
     // Push the default ListViewController: todo rename RootViewController class
     ChecklistViewController* listController = [[ChecklistViewController alloc] init];
     [navigationController pushViewController:listController animated:NO];
-    listController.navigationItem.title = kDefaultChannelName;
+    listController.navigationItem.title = @"Grocery Sync";
     [listController useDatabase: database];
 
     if (sFacebookAppID) {
