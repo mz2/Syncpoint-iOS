@@ -32,12 +32,11 @@
     CouchReplication *_controlPull;
     CouchReplication *_controlPush;
     BOOL _observingControlPull;
+    BOOL _singleChannelMode;
 }
 
 
-@synthesize localServer=_server, session=_session, appId=_appId,
-    localControlDatabase=_localControlDatabase;
-
+@synthesize localServer=_server, session=_session, appId=_appId;
 
 - (id) initWithRemoteServer: (NSURL*)remoteServerURL
                      appId: (NSString*)syncpointAppId
@@ -98,6 +97,11 @@
         if (!channel) return nil;
     }
     return channel;
+}
+
+- (CouchDatabase*) myDatabase {
+    _singleChannelMode = YES;
+    return _localControlDatabase;
 }
 
 
@@ -311,6 +315,9 @@
 
 // Called when the control database changes or is initial pulled from the server.
 - (void) getUpToDateWithSubscriptions {
+    if (_singleChannelMode) {
+        return;
+    }
     LogTo(Syncpoint, @"getUpToDateWithSubscriptions");
     // Make installations for any subscriptions that don't have one:
     NSSet* installedSubscriptions = _session.installedSubscriptions;

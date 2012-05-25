@@ -44,6 +44,8 @@
 
 - (CouchLiveQuery*) myChannelsQuery;
 
+- (CouchDatabase*) myDatabase;
+
 @property (readonly, nonatomic) CouchServer* localServer;
 
 /** The id used to relate the client code to the server storage. */
@@ -52,7 +54,6 @@
 /** The session object, which manages channels and subscriptions. */
 @property (readonly) SyncpointSession* session;
 
-@property (readonly) CouchDatabase* localControlDatabase;
 
 
 @end

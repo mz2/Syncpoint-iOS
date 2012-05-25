@@ -52,7 +52,7 @@
         return YES;
     }
 
-    CouchDatabase *database = self.syncpoint.localControlDatabase;
+    CouchDatabase *database = [self.syncpoint myDatabase];
 
     database.tracksChanges = YES;
     NSLog(@"...using CouchDatabase at <%@>", database.URL);
