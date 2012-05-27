@@ -87,12 +87,6 @@
 		790DE3DF1540955700A0C072 /* SBJsonBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 790DE3D01540955700A0C072 /* SBJsonBase.h */; };
 		790DE3E01540955700A0C072 /* SBJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 790DE3D11540955700A0C072 /* SBJsonParser.h */; };
 		790DE3E11540955700A0C072 /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 790DE3D21540955700A0C072 /* SBJsonWriter.h */; };
-		7920EDD2154B439A00DD2A30 /* ChannelsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 7920EDCF154B439A00DD2A30 /* ChannelsViewController.h */; };
-		7920EDD3154B439A00DD2A30 /* ChannelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7920EDD0154B439A00DD2A30 /* ChannelsViewController.m */; };
-		7920EDD4154B439A00DD2A30 /* ChannelsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7920EDD1154B439A00DD2A30 /* ChannelsViewController.xib */; };
-		79CB693D1551B8AE00A0F7F6 /* NewChannelViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 79CB693A1551B8AE00A0F7F6 /* NewChannelViewController.h */; };
-		79CB693E1551B8AE00A0F7F6 /* NewChannelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 79CB693B1551B8AE00A0F7F6 /* NewChannelViewController.m */; };
-		79CB693F1551B8AE00A0F7F6 /* NewChannelViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 79CB693C1551B8AE00A0F7F6 /* NewChannelViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -208,12 +202,6 @@
 		790DE3D01540955700A0C072 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
 		790DE3D11540955700A0C072 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
 		790DE3D21540955700A0C072 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
-		7920EDCF154B439A00DD2A30 /* ChannelsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelsViewController.h; sourceTree = "<group>"; };
-		7920EDD0154B439A00DD2A30 /* ChannelsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ChannelsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		7920EDD1154B439A00DD2A30 /* ChannelsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChannelsViewController.xib; sourceTree = "<group>"; };
-		79CB693A1551B8AE00A0F7F6 /* NewChannelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewChannelViewController.h; sourceTree = "<group>"; };
-		79CB693B1551B8AE00A0F7F6 /* NewChannelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewChannelViewController.m; sourceTree = "<group>"; };
-		79CB693C1551B8AE00A0F7F6 /* NewChannelViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewChannelViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -359,12 +347,6 @@
 		27EB959214F87C9700072752 /* Demo-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				7920EDCF154B439A00DD2A30 /* ChannelsViewController.h */,
-				79CB693A1551B8AE00A0F7F6 /* NewChannelViewController.h */,
-				79CB693B1551B8AE00A0F7F6 /* NewChannelViewController.m */,
-				79CB693C1551B8AE00A0F7F6 /* NewChannelViewController.xib */,
-				7920EDD0154B439A00DD2A30 /* ChannelsViewController.m */,
-				7920EDD1154B439A00DD2A30 /* ChannelsViewController.xib */,
 				27EB959814F87C9700072752 /* DemoAppDelegate.h */,
 				27EB959914F87C9700072752 /* DemoAppDelegate.m */,
 				27EB95A514F87C9700072752 /* ChecklistViewController.h */,
@@ -452,8 +434,6 @@
 				790DE3DF1540955700A0C072 /* SBJsonBase.h in Headers */,
 				790DE3E01540955700A0C072 /* SBJsonParser.h in Headers */,
 				790DE3E11540955700A0C072 /* SBJsonWriter.h in Headers */,
-				7920EDD2154B439A00DD2A30 /* ChannelsViewController.h in Headers */,
-				79CB693D1551B8AE00A0F7F6 /* NewChannelViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -594,8 +574,6 @@
 				27EB95B314F87C9700072752 /* MainWindow.xib in Resources */,
 				27EB95B514F87C9700072752 /* ChecklistViewController.xib in Resources */,
 				790DE3D51540955700A0C072 /* FBDialog.bundle in Resources */,
-				7920EDD4154B439A00DD2A30 /* ChannelsViewController.xib in Resources */,
-				79CB693F1551B8AE00A0F7F6 /* NewChannelViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,8 +678,6 @@
 				27EB95AB14F87C9700072752 /* DemoAppDelegate.m in Sources */,
 				27EB95B214F87C9700072752 /* main.m in Sources */,
 				27EB95B414F87C9700072752 /* ChecklistViewController.m in Sources */,
-				7920EDD3154B439A00DD2A30 /* ChannelsViewController.m in Sources */,
-				79CB693E1551B8AE00A0F7F6 /* NewChannelViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

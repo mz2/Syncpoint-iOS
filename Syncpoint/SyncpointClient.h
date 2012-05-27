@@ -20,6 +20,7 @@
  @return  The Syncpoint instance, or nil on failure. */
 - (id) initWithRemoteServer: (NSURL*)remoteServerURL
                      appId: (NSString*)syncpointAppId
+               multiChannel: (BOOL) multi
                      error: (NSError**)error;
 
 /** Initializes a SyncpointClient instance.
@@ -31,6 +32,7 @@
 - (id) initWithLocalServer: (CouchServer*)localServer
               remoteServer: (NSURL*)remoteServerURL
                      appId: (NSString*)syncpointAppId
+              multiChannel: (BOOL) multi
                      error: (NSError**)error;
 
 /** All authentication passes through [pairSessionWithType andToken]. 
@@ -44,6 +46,8 @@
 
 - (CouchLiveQuery*) myChannelsQuery;
 
+- (CouchDatabase*) myDatabase;
+
 @property (readonly, nonatomic) CouchServer* localServer;
 
 /** The id used to relate the client code to the server storage. */
@@ -51,6 +55,7 @@
 
 /** The session object, which manages channels and subscriptions. */
 @property (readonly) SyncpointSession* session;
+
 
 
 @end

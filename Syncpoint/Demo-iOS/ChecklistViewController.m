@@ -20,9 +20,9 @@
 
 #import "ChecklistViewController.h"
 #import "ConfigViewController.h"
-#import "ChannelsViewController.h"
 #import "DemoAppDelegate.h"
 
+#import <Syncpoint/Syncpoint.h>
 #import <Syncpoint/CouchCocoa.h>
 #import <Syncpoint/CouchDesignDocument_Embedded.h>
 
