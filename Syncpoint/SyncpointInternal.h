@@ -27,6 +27,7 @@
     @return  The new SyncpointSession instance. */
 + (SyncpointSession*) makeSessionInDatabase: (CouchDatabase*)database
                                       appId: (NSString*)appId
+                               multiChannel: (BOOL) multi
                            withRemoteServer: (NSURL*) remote
                                       error: (NSError**)outError;
 
@@ -35,6 +36,7 @@
 
 /** The name of the remote database that the local control database syncs with. */
 @property (readonly) NSString* control_database;
+@property (readonly) NSString* channel_database;
 @property (readwrite) BOOL control_db_synced;
 
 - (void) didFirstSyncOfControlDB;

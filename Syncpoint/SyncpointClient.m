@@ -15,6 +15,7 @@
 
 
 #define kLocalControlDatabaseName @"sp_control"
+#define kLocalChannelDatabaseName @"sp_channel"
 
 
 @interface SyncpointClient ()
@@ -27,10 +28,10 @@
     NSURL* _remote;
     NSString* _appId;
     CouchServer* _server;
-    CouchDatabase* _localControlDatabase;
+    CouchDatabase* _localControlOrChannelDatabase;
     SyncpointSession* _session;
-    CouchReplication *_controlPull;
-    CouchReplication *_controlPush;
+    CouchReplication *_syncpointPull;
+    CouchReplication *_syncpointPush;
     BOOL _observingControlPull;
     BOOL _singleChannelMode;
 }
@@ -40,15 +41,17 @@
 
 - (id) initWithRemoteServer: (NSURL*)remoteServerURL
                      appId: (NSString*)syncpointAppId
+               multiChannel: (BOOL) multi
                      error: (NSError**)outError
 {
     CouchTouchDBServer* newLocalServer = [CouchTouchDBServer sharedInstance];
-    return [self initWithLocalServer:newLocalServer remoteServer:remoteServerURL appId:syncpointAppId error:outError];
+    return [self initWithLocalServer:newLocalServer remoteServer:remoteServerURL appId:syncpointAppId multiChannel:multi error:outError];
 }
 
 - (id) initWithLocalServer: (CouchServer*)localServer
               remoteServer: (NSURL*)remoteServerURL
                      appId: (NSString*)syncpointAppId
+              multiChannel: (BOOL) multi
                      error: (NSError**)outError
 {
     CAssert(localServer);
@@ -58,15 +61,23 @@
         _server = localServer;
         _remote = remoteServerURL;
         _appId = syncpointAppId;
-                
-        // Create the control database on the first run of the app.
-        _localControlDatabase = [self setupControlDatabaseNamed: kLocalControlDatabaseName error: outError];
-        if (!_localControlDatabase) return nil;
+        
+        if (multi) {
+            // Create the control database on the first run of the app.
+            _localControlOrChannelDatabase = [self setupControlDatabaseNamed: kLocalControlDatabaseName error: outError];            
+        } else {
+            // Create the sync channel database on the first run of the app.
+            _localControlOrChannelDatabase = [_server databaseNamed: kLocalChannelDatabaseName];
+            if (![_localControlOrChannelDatabase ensureCreated: outError])
+                return nil;
+        }
+        if (!_localControlOrChannelDatabase) return nil;
 
-        _session = [SyncpointSession sessionInDatabase: _localControlDatabase];
+        _session = [SyncpointSession sessionInDatabase: _localControlOrChannelDatabase];
         if (!_session) { // if no session make one
-            _session = [SyncpointSession makeSessionInDatabase: _localControlDatabase
+            _session = [SyncpointSession makeSessionInDatabase: _localControlOrChannelDatabase
                                                          appId: _appId
+                                                  multiChannel: multi
                                               withRemoteServer: _remote
                                                          error: nil];   // TODO: Report error
         }
@@ -75,7 +86,7 @@
         }
         if (_session.isPaired) {
             LogTo(Syncpoint, @"Session is active");
-            [self connectToControlDB];
+            [self connectToControlOrChannelDB];
         } else if (_session.isReadyToPair) {
             LogTo(Syncpoint, @"Begin pairing with cloud: %@", _remote.absoluteString);
             [self beginPairing];
@@ -101,14 +112,14 @@
 
 - (CouchDatabase*) myDatabase {
     _singleChannelMode = YES;
-    return _localControlDatabase;
+    return _localControlOrChannelDatabase;
 }
 
 
 #pragma mark - Views and Queries
 
 - (CouchLiveQuery*) myChannelsQuery {
-    CouchLiveQuery* query = [[[_localControlDatabase designDocumentWithName: @"syncpoint"]
+    CouchLiveQuery* query = [[[_localControlOrChannelDatabase designDocumentWithName: @"syncpoint"]
                               queryViewNamed: @"channels"] asLiveQuery];
     id owner;
     if (_session.owner_id) {
@@ -207,35 +218,44 @@
     [_session setValue:@"paired" forKey:@"state"];
     [_session setValue:[props valueForKey:@"owner_id"] ofProperty:@"owner_id"];
     [_session setValue:[props valueForKey:@"control_database"] ofProperty:@"control_database"];
+    [_session setValue:[props valueForKey:@"channel_database"] ofProperty:@"channel_database"];
     RESTOperation* op = [_session save];
     [op onCompletion:^{
         LogTo(Syncpoint, @"Device is now paired");
         [props setObject:[NSNumber numberWithBool:YES] forKey:@"_deleted"];
         [[userDoc currentRevision] putProperties: props];
-        [self connectToControlDB];
+        [self connectToControlOrChannelDB];
     }];
 }
 
 
 #pragma mark - Connect to Control Database
 
-- (CouchReplication*) pullControlDataFromDatabaseNamed: (NSString*)dbName {
+- (CouchReplication*) pullFromSyncpointDatabaseNamed: (NSString*)dbName {
     NSURL* url = [NSURL URLWithString: dbName relativeToURL: _remote];
-    return [_localControlDatabase pullFromDatabaseAtURL: url];
+    return [_localControlOrChannelDatabase pullFromDatabaseAtURL: url];
 }
 
-- (CouchReplication*) pushControlDataToDatabaseNamed: (NSString*)dbName {
+- (CouchReplication*) pushToSyncpointDatabaseNamed: (NSString*)dbName {
     NSURL* url = [NSURL URLWithString: dbName relativeToURL: _remote];
-    return [_localControlDatabase pushToDatabaseAtURL: url];
+    return [_localControlOrChannelDatabase pushToDatabaseAtURL: url];
 }
 
-// Start bidirectional sync with the control database.
-- (void) connectToControlDB {
-    LogTo(Syncpoint, @"connectToControlDB %@", _session.control_database);    
-    if (!_session.control_db_synced) {
-        [self doInitialSyncOfControlDB]; // sync once before we write
+// Start bidirectional sync with the control or channel database.
+- (void) connectToControlOrChannelDB {
+    if (_session.channel_database) {
+        LogTo(Syncpoint, @"connectToChannelDB %@", (_session.channel_database));
+        _syncpointPull = [self pullFromSyncpointDatabaseNamed: _session.channel_database];
+        _syncpointPull.continuous = YES; 
+        _syncpointPush = [self pushToSyncpointDatabaseNamed: _session.channel_database];
+        _syncpointPush.continuous = YES;
     } else {
-        [self didInitialSyncOfControlDB]; // go continuous
+        LogTo(Syncpoint, @"connectToControlDB %@", (_session.control_database));
+        if (!_session.control_db_synced) {
+            [self doInitialSyncOfControlDB]; // sync once before we write
+        } else {
+            [self didInitialSyncOfControlDB]; // go continuous
+        }
     }
 }
 
@@ -246,8 +266,8 @@
         // Once it has stopped, we can fire the didSyncControlDB event on the session,
         // and restart the sync in continuous mode.
         LogTo(Syncpoint, @"doInitialSyncOfControlDB");
-        _controlPull = [self pullControlDataFromDatabaseNamed: _session.control_database];
-        [_controlPull addObserver: self forKeyPath: @"running" options: 0 context: NULL];
+        _syncpointPull = [self pullFromSyncpointDatabaseNamed: _session.control_database];
+        [_syncpointPull addObserver: self forKeyPath: @"running" options: 0 context: NULL];
         _observingControlPull = YES;
     }
 }
@@ -255,10 +275,10 @@
 - (void) didInitialSyncOfControlDB {
     LogTo(Syncpoint, @"didInitialSyncOfControlDB");
     // Now we can sync continuously & push
-    _controlPull = [self pullControlDataFromDatabaseNamed: _session.control_database];
-    _controlPull.continuous = YES; 
-    _controlPush = [self pushControlDataToDatabaseNamed: _session.control_database];
-    _controlPush.continuous = YES;
+    _syncpointPull = [self pullFromSyncpointDatabaseNamed: _session.control_database];
+    _syncpointPull.continuous = YES; 
+    _syncpointPush = [self pushToSyncpointDatabaseNamed: _session.control_database];
+    _syncpointPush.continuous = YES;
     [_session didFirstSyncOfControlDB];
     MYAfterDelay(1.0, ^{
         [self getUpToDateWithSubscriptions];
@@ -266,11 +286,11 @@
     });
 }
 
-// Observes when the initial _controlPull stops running, after -doInitialSyncOfControlDB.
+// Observes when the initial _syncpointPull stops running, after -doInitialSyncOfControlDB.
 - (void) observeValueForKeyPath: (NSString*)keyPath ofObject: (id)object 
                          change: (NSDictionary*)change context: (void*)context
 {
-    if (object == _controlPull && !_controlPull.running) {
+    if (object == _syncpointPull && !_syncpointPull.running) {
 //        first Control database sync is done
         [self stopObservingControlPull];
         [self mergeExistingChannels];
@@ -281,7 +301,7 @@
 
 - (void) stopObservingControlPull {
     if (_observingControlPull) {
-        [_controlPull removeObserver: self forKeyPath: @"running"];
+        [_syncpointPull removeObserver: self forKeyPath: @"running"];
         _observingControlPull = NO;
     }
 }
@@ -291,13 +311,13 @@
 #pragma mark - React to Control Database Changes
 
 
-// Begins observing document changes in the _localControlDatabase.
+// Begins observing document changes in the _localControlOrChannelDatabase.
 - (void) observeControlDatabase {
-    Assert(_localControlDatabase);
+    Assert(_localControlOrChannelDatabase);
     [[NSNotificationCenter defaultCenter] addObserver: self 
                                              selector: @selector(controlDatabaseChanged)
                                                  name: kCouchDatabaseChangeNotification 
-                                               object: _localControlDatabase];
+                                               object: _localControlOrChannelDatabase];
 }
 
 - (void) controlDatabaseChanged {

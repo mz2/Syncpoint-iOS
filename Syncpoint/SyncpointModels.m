@@ -77,7 +77,7 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
 
 @implementation SyncpointSession
 
-@dynamic owner_id, oauth_creds, pairing_creds, control_database, control_db_synced;
+@dynamic owner_id, oauth_creds, pairing_creds, channel_database, control_database, control_db_synced;
 
 - (bool) isPaired {
     return [self.state isEqual: @"paired"];
@@ -105,6 +105,7 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
 
 + (SyncpointSession*) makeSessionInDatabase: (CouchDatabase*)database
                                       appId: (NSString*)appId
+                               multiChannel: (BOOL) multi
                            withRemoteServer: (NSURL*) remote
                                       error: (NSError**)outError
 {
@@ -132,6 +133,12 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
     NSDictionary* pairingCreds = $dict({@"username", [@"pairing-" stringByAppendingString:randomString()]},
                                   {@"password", randomString()});
     session.pairing_creds = pairingCreds;
+    
+    if (multi) {
+        [session setValue: @"multi-channel" ofProperty: @"pairing_mode"];
+    } else {
+        [session setValue: @"single-channel" ofProperty: @"pairing_mode"];
+    }
     
     if (![[session save] wait: outError]) {
         Warn(@"SyncpointSession: Couldn't save new session");
@@ -171,6 +178,7 @@ static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
                  {@"sp_oauth",self.oauth_creds},
                  {@"pairing_state", @"new"},
                  {@"pairing_type",[self getValueOfProperty:@"pairing_type"]},
+                 {@"pairing_mode",[self getValueOfProperty:@"pairing_mode"]},
                  {@"pairing_token",[self getValueOfProperty:@"pairing_token"]},
                  {@"pairing_app_id",[self getValueOfProperty:@"app_id"]},
                  {@"roles", [NSArray array]},

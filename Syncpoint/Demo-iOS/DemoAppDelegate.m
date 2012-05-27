@@ -45,6 +45,7 @@
 
     self.syncpoint = [[SyncpointClient alloc] initWithRemoteServer: remote
                                                             appId: kSyncpointAppId
+                                                      multiChannel: NO
                                                             error: &error];
 
     if (error) {
