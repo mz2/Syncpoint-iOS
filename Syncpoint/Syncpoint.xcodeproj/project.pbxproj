@@ -32,11 +32,11 @@
 		27108CC3151285B800E5B92C /* Syncpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27EB94A814F700AC00072752 /* Syncpoint.framework */; };
 		27108CC61512861300E5B92C /* Syncpoint.framework in Copy Framework */ = {isa = PBXBuildFile; fileRef = 27EB94A814F700AC00072752 /* Syncpoint.framework */; };
 		27108CE215128FB000E5B92C /* MYURLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 27108CE115128FB000E5B92C /* MYURLHandler.m */; };
-		277B2E4B15520AD200693E3F /* libCouchCocoa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27EB951E14F70D8800072752 /* libCouchCocoa.a */; };
-		278495F0150AC44100A41C44 /* libCouchCocoa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 278495EF150AC44100A41C44 /* libCouchCocoa.a */; };
 		27849608150C195400A41C44 /* SyncpointInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 27849607150C195400A41C44 /* SyncpointInternal.h */; };
 		27849609150C195400A41C44 /* SyncpointInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 27849607150C195400A41C44 /* SyncpointInternal.h */; };
 		278E4DBE1561937A00DDCEF9 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278E4DBD1561937A00DDCEF9 /* CFNetwork.framework */; };
+		278E58E7157E812100BBE892 /* libCouchCocoa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 278E58E6157E812100BBE892 /* libCouchCocoa.a */; };
+		278E58E9157E813900BBE892 /* libTouchDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 278E58E8157E813900BBE892 /* libTouchDB.a */; };
 		2799D2091507D74C00CB90E0 /* SyncpointModels.h in Headers */ = {isa = PBXBuildFile; fileRef = 2799D2071507D74B00CB90E0 /* SyncpointModels.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2799D20A1507D74C00CB90E0 /* SyncpointModels.h in Headers */ = {isa = PBXBuildFile; fileRef = 2799D2071507D74B00CB90E0 /* SyncpointModels.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2799D20B1507D74C00CB90E0 /* SyncpointModels.m in Sources */ = {isa = PBXBuildFile; fileRef = 2799D2081507D74B00CB90E0 /* SyncpointModels.m */; };
@@ -122,7 +122,6 @@
 
 /* Begin PBXFileReference section */
 		27108C6B15126A6500E5B92C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		27108C8515127F6300E5B92C /* libfacebook_mac_sdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfacebook_mac_sdk.a; path = "../vendor/facebook-ios-sdk/src/build/Release/libfacebook_mac_sdk.a"; sourceTree = "<group>"; };
 		27108C8715127F9200E5B92C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		27108C8D1512841600E5B92C /* Syncpoint Mac Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Syncpoint Mac Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27108C8F1512841600E5B92C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -140,9 +139,10 @@
 		27108CB61512843100E5B92C /* ShoppingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShoppingItem.h; sourceTree = "<group>"; };
 		27108CB71512843100E5B92C /* ShoppingItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShoppingItem.m; sourceTree = "<group>"; };
 		27108CE115128FB000E5B92C /* MYURLHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MYURLHandler.m; path = ../../TouchDB/vendor/MYUtilities/MYURLHandler.m; sourceTree = "<group>"; };
-		278495EF150AC44100A41C44 /* libCouchCocoa.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libCouchCocoa.a; path = "../build/Syncpoint/Build/Products/Debug-iphonesimulator/libCouchCocoa.a"; sourceTree = "<group>"; };
 		27849607150C195400A41C44 /* SyncpointInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncpointInternal.h; sourceTree = "<group>"; };
 		278E4DBD1561937A00DDCEF9 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
+		278E58E6157E812100BBE892 /* libCouchCocoa.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libCouchCocoa.a; path = "../CouchCocoa/build/Release-iphoneos/libCouchCocoa.a"; sourceTree = "<group>"; };
+		278E58E8157E813900BBE892 /* libTouchDB.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libTouchDB.a; path = "../TouchDB/build/Release-iphoneos/libTouchDB.a"; sourceTree = "<group>"; };
 		2799D2061506F7AD00CB90E0 /* Schema.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = Schema.md; sourceTree = "<group>"; };
 		2799D2071507D74B00CB90E0 /* SyncpointModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SyncpointModels.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2799D2081507D74B00CB90E0 /* SyncpointModels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SyncpointModels.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -154,10 +154,7 @@
 		27EB94FA14F7043C00072752 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		27EB94FC14F7044300072752 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		27EB94FE14F7044900072752 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		27EB950D14F70CF300072752 /* libfacebook_ios_sdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfacebook_ios_sdk.a; path = "../vendor/facebook-ios-sdk/src/build/Release-iphoneos/libfacebook_ios_sdk.a"; sourceTree = "<group>"; };
 		27EB951314F70D4D00072752 /* libSyncpoint.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSyncpoint.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		27EB951E14F70D8800072752 /* libCouchCocoa.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libCouchCocoa.a; path = ../build/Syncpoint/Build/Products/Debug/libCouchCocoa.a; sourceTree = "<group>"; };
-		27EB952014F70DDD00072752 /* libfacebook_ios_sdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfacebook_ios_sdk.a; path = "../vendor/facebook-ios-sdk/src/build/Release-iphoneos/libfacebook_ios_sdk.a"; sourceTree = "<group>"; };
 		27EB954114F71AAC00072752 /* SyncpointPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyncpointPrefix.pch; sourceTree = "<group>"; };
 		27EB957B14F87C6800072752 /* Syncpoint Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Syncpoint Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27EB957D14F87C6800072752 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -186,7 +183,6 @@
 		27EB95C014F966BB00072752 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		27EB95C214F96AA000072752 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/usr/lib/libz.dylib; sourceTree = DEVELOPER_DIR; };
 		27EDEA531513F2200060EDB9 /* Syncpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Syncpoint.h; sourceTree = "<group>"; };
-		27F65BF6151CD19E004AB2D0 /* libfacebook_ios_sdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfacebook_ios_sdk.a; path = "../build/Syncpoint/Build/Products/Debug-iphoneos/libfacebook_ios_sdk.a"; sourceTree = "<group>"; };
 		790DE3C41540955700A0C072 /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facebook.h; sourceTree = "<group>"; };
 		790DE3C51540955700A0C072 /* FBConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBConnect.h; sourceTree = "<group>"; };
 		790DE3C61540955700A0C072 /* FBDialog.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FBDialog.bundle; sourceTree = "<group>"; };
@@ -224,7 +220,6 @@
 				27EB94FD14F7044300072752 /* libz.dylib in Frameworks */,
 				27EB94FB14F7043C00072752 /* libsqlite3.dylib in Frameworks */,
 				27EB94CF14F701EF00072752 /* Foundation.framework in Frameworks */,
-				277B2E4B15520AD200693E3F /* libCouchCocoa.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,7 +227,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				278495F0150AC44100A41C44 /* libCouchCocoa.a in Frameworks */,
+				278E58E9157E813900BBE892 /* libTouchDB.a in Frameworks */,
+				278E58E7157E812100BBE892 /* libCouchCocoa.a in Frameworks */,
 				27EB951414F70D4D00072752 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -318,20 +314,16 @@
 		27EB94AA14F700AC00072752 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				278E58E8157E813900BBE892 /* libTouchDB.a */,
+				278E58E6157E812100BBE892 /* libCouchCocoa.a */,
 				278E4DBD1561937A00DDCEF9 /* CFNetwork.framework */,
 				790DE3C31540955700A0C072 /* facebook-ios-sdk */,
 				27108C8715127F9200E5B92C /* AppKit.framework */,
-				27108C8515127F6300E5B92C /* libfacebook_mac_sdk.a */,
 				27108C6B15126A6500E5B92C /* Security.framework */,
-				278495EF150AC44100A41C44 /* libCouchCocoa.a */,
 				27EB95C214F96AA000072752 /* libz.dylib */,
-				27F65BF6151CD19E004AB2D0 /* libfacebook_ios_sdk.a */,
 				27EB95C014F966BB00072752 /* SystemConfiguration.framework */,
 				27EB95BE14F966B500072752 /* Security.framework */,
 				27EB95BC14F966A500072752 /* libsqlite3.dylib */,
-				27EB952014F70DDD00072752 /* libfacebook_ios_sdk.a */,
-				27EB951E14F70D8800072752 /* libCouchCocoa.a */,
-				27EB950D14F70CF300072752 /* libfacebook_ios_sdk.a */,
 				27EB94FE14F7044900072752 /* SystemConfiguration.framework */,
 				27EB94FC14F7044300072752 /* libz.dylib */,
 				27EB94FA14F7043C00072752 /* libsqlite3.dylib */,
@@ -859,12 +851,7 @@
 					"../CouchCocoa/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../build/Syncpoint/Build/Products/Debug\"",
-					"\"$(SRCROOT)/../build/Syncpoint/Build/Products/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/../build/Syncpoint/Build/Products/Debug-iphoneos\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = Syncpoint;
 				PUBLIC_HEADERS_FOLDER_PATH = Headers;
 				SDKROOT = iphoneos;
@@ -889,12 +876,7 @@
 					"../CouchCocoa/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../build/Syncpoint/Build/Products/Debug\"",
-					"\"$(SRCROOT)/../build/Syncpoint/Build/Products/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/../build/Syncpoint/Build/Products/Debug-iphoneos\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = Syncpoint;
 				PUBLIC_HEADERS_FOLDER_PATH = Headers;
 				SDKROOT = iphoneos;
@@ -914,7 +896,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../../Library/Developer/Xcode/DerivedData/Syncpoint-ddofwcaizatiwuefuwgkignqftaf/Build/Products/Debug-iphoneos\"",
 					"\"$(SRCROOT)/facebook-ios-sdk\"",
 				);
 				OTHER_LDFLAGS = "-ObjC";
@@ -936,7 +917,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../../Library/Developer/Xcode/DerivedData/Syncpoint-ddofwcaizatiwuefuwgkignqftaf/Build/Products/Debug-iphoneos\"",
 					"\"$(SRCROOT)/facebook-ios-sdk\"",
 				);
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
