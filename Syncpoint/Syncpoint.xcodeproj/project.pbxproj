@@ -37,6 +37,8 @@
 		278E4DBE1561937A00DDCEF9 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 278E4DBD1561937A00DDCEF9 /* CFNetwork.framework */; };
 		278E58E7157E812100BBE892 /* libCouchCocoa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 278E58E6157E812100BBE892 /* libCouchCocoa.a */; };
 		278E58E9157E813900BBE892 /* libTouchDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 278E58E8157E813900BBE892 /* libTouchDB.a */; };
+		278E5918157EF24000BBE892 /* libCouchCocoa.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 278E5916157EF24000BBE892 /* libCouchCocoa.a */; };
+		278E5919157EF24000BBE892 /* libTouchDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 278E5917157EF24000BBE892 /* libTouchDB.a */; };
 		2799D2091507D74C00CB90E0 /* SyncpointModels.h in Headers */ = {isa = PBXBuildFile; fileRef = 2799D2071507D74B00CB90E0 /* SyncpointModels.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2799D20A1507D74C00CB90E0 /* SyncpointModels.h in Headers */ = {isa = PBXBuildFile; fileRef = 2799D2071507D74B00CB90E0 /* SyncpointModels.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2799D20B1507D74C00CB90E0 /* SyncpointModels.m in Sources */ = {isa = PBXBuildFile; fileRef = 2799D2081507D74B00CB90E0 /* SyncpointModels.m */; };
@@ -141,8 +143,10 @@
 		27108CE115128FB000E5B92C /* MYURLHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MYURLHandler.m; path = ../../TouchDB/vendor/MYUtilities/MYURLHandler.m; sourceTree = "<group>"; };
 		27849607150C195400A41C44 /* SyncpointInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncpointInternal.h; sourceTree = "<group>"; };
 		278E4DBD1561937A00DDCEF9 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.1.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
-		278E58E6157E812100BBE892 /* libCouchCocoa.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libCouchCocoa.a; path = "../CouchCocoa/build/Release-iphoneos/libCouchCocoa.a"; sourceTree = "<group>"; };
-		278E58E8157E813900BBE892 /* libTouchDB.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libTouchDB.a; path = "../TouchDB/build/Release-iphoneos/libTouchDB.a"; sourceTree = "<group>"; };
+		278E58E6157E812100BBE892 /* libCouchCocoa.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libCouchCocoa.a; path = "../CouchCocoa/build/Release-iphoneos/libCouchCocoa.a"; sourceTree = "<group>"; };
+		278E58E8157E813900BBE892 /* libTouchDB.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTouchDB.a; path = "../TouchDB/build/Release-iphoneos/libTouchDB.a"; sourceTree = "<group>"; };
+		278E5916157EF24000BBE892 /* libCouchCocoa.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libCouchCocoa.a; path = ../CouchCocoa/build/Release/libCouchCocoa.a; sourceTree = "<group>"; };
+		278E5917157EF24000BBE892 /* libTouchDB.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTouchDB.a; path = ../TouchDB/build/Release/libTouchDB.a; sourceTree = "<group>"; };
 		2799D2061506F7AD00CB90E0 /* Schema.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = Schema.md; sourceTree = "<group>"; };
 		2799D2071507D74B00CB90E0 /* SyncpointModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SyncpointModels.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2799D2081507D74B00CB90E0 /* SyncpointModels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SyncpointModels.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -214,6 +218,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				278E5918157EF24000BBE892 /* libCouchCocoa.a in Frameworks */,
+				278E5919157EF24000BBE892 /* libTouchDB.a in Frameworks */,
 				27108C8815127F9200E5B92C /* AppKit.framework in Frameworks */,
 				27108C6C15126A6500E5B92C /* Security.framework in Frameworks */,
 				27EB94FF14F7044900072752 /* SystemConfiguration.framework in Frameworks */,
@@ -314,6 +320,8 @@
 		27EB94AA14F700AC00072752 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				278E5916157EF24000BBE892 /* libCouchCocoa.a */,
+				278E5917157EF24000BBE892 /* libTouchDB.a */,
 				278E58E8157E813900BBE892 /* libTouchDB.a */,
 				278E58E6157E812100BBE892 /* libCouchCocoa.a */,
 				278E4DBD1561937A00DDCEF9 /* CFNetwork.framework */,
