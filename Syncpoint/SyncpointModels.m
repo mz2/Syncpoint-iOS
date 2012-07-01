@@ -31,7 +31,7 @@ static NSString* randomString(void) {
 static NSEnumerator* modelsOfType(CouchDatabase* database, NSString* type) {
     NSEnumerator* e = [[database getAllDocuments] rows];
 //    LogTo(Syncpoint, @"modelsOfType %@ for database with %u docs", type, [[[database getAllDocuments] rows] count]);
-    return [e my_map: ^(CouchQueryRow* row) {
+    return [e my_map: ^id(CouchQueryRow* row) {
         if ([type isEqual: [row.documentProperties objectForKey: @"type"]]) {
             CouchModel* model = [CouchModel modelForDocument: row.document];
             if (!model) {
