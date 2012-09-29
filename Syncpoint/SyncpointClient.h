@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Couchbase, Inc. All rights reserved.
 //
 
+#import <CouchCocoa/CouchCocoa.h>
 #import <Foundation/Foundation.h>
 @class CouchServer, SyncpointSession, SyncpointInstallation, SyncpointChannel;
 

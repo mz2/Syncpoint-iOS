@@ -8,8 +8,10 @@
 
 #import "SyncpointModels.h"
 #import "SyncpointInternal.h"
-#import "CouchModelFactory.h"
-#import "TDMisc.h"
+#import <CouchCocoa/CouchCocoa.h>
+#import <CouchCocoa/CouchModelFactory.h>
+#import <TouchDB/TouchDB.h>
+#import <TouchDB/TDMisc.h>
 #import "CollectionUtils.h"
 #import <Security/SecRandom.h>
 
@@ -20,7 +22,7 @@
 @end
 
 
-static NSString* randomString(void) {
+static NSString *randomString(void) {
     uint8_t randomBytes[16];    // 128 bits of entropy
     SecRandomCopyBytes(kSecRandomDefault, sizeof(randomBytes), randomBytes);
     return TDHexFromBytes(randomBytes, sizeof(randomBytes));

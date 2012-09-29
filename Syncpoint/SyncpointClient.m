@@ -9,8 +9,9 @@
 #import "SyncpointClient.h"
 #import "SyncpointModels.h"
 #import "SyncpointInternal.h"
-#import "CouchCocoa.h"
-#import "TDMisc.h"
+#import <CouchCocoa/CouchCocoa.h>
+#import <CouchCocoa/CouchDesignDocument_Embedded.h>
+#import <TouchDB/TouchDB.h>
 #import "MYBlockUtils.h"
 
 
